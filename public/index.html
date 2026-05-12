@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Zenith — Your personal productivity command center. Track habits, manage tasks, and visualize your growth.">
+  <title>Zenith — Productivity Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">Z</div>
+        <span class="logo-text">Zenith</span>
+      </div>
+    </div>
+    <ul class="nav-list">
+      <li>
+        <a href="#" class="nav-link active" data-view="dashboard" id="nav-dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link" data-view="habits" id="nav-habits">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <span>Habits</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link" data-view="tasks" id="nav-tasks">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"/>
+            <line x1="8" y1="12" x2="21" y2="12"/>
+            <line x1="8" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="6" x2="3.01" y2="6"/>
+            <line x1="3" y1="12" x2="3.01" y2="12"/>
+            <line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+          <span>Tasks</span>
+        </a>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="quote-widget" id="quote-widget">
+        <p class="quote-text" id="quote-text">"The secret of getting ahead is getting started."</p>
+        <p class="quote-author" id="quote-author">— Mark Twain</p>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content" id="main-content">
+    <!-- Dashboard View -->
+    <section class="view active" id="view-dashboard">
+      <div class="view-header">
+        <div>
+          <h1 id="greeting">Good evening</h1>
+          <p class="view-subtitle">Here's your productivity overview</p>
+        </div>
+        <div class="date-display" id="date-display"></div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-row" id="stats-row">
+        <div class="stat-card" id="stat-productivity">
+          <div class="stat-icon productivity-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" data-target="0" id="stat-score">0</span>
+            <span class="stat-label">Productivity Score</span>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-habits-today">
+          <div class="stat-icon habits-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-habits-val">0/0</span>
+            <span class="stat-label">Habits Today</span>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-streak">
+          <div class="stat-icon streak-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-streak-val">0</span>
+            <span class="stat-label">Best Streak</span>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-tasks-done">
+          <div class="stat-icon tasks-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 11 12 14 22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-tasks-val">0/0</span>
+            <span class="stat-label">Tasks Completed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="charts-row">
+        <div class="chart-card" id="chart-weekly">
+          <h3 class="chart-title">Weekly Habit Completion</h3>
+          <div class="chart-container">
+            <canvas id="weekly-chart" width="500" height="220"></canvas>
+          </div>
+        </div>
+        <div class="chart-card" id="chart-donut">
+          <h3 class="chart-title">Task Status</h3>
+          <div class="chart-container donut-container">
+            <canvas id="donut-chart" width="220" height="220"></canvas>
+            <div class="donut-center" id="donut-center">
+              <span class="donut-value">0%</span>
+              <span class="donut-label">Complete</span>
+            </div>
+          </div>
+          <div class="donut-legend" id="donut-legend"></div>
+        </div>
+      </div>
+
+      <!-- Priority Breakdown -->
+      <div class="chart-card priority-card" id="chart-priority">
+        <h3 class="chart-title">Active Tasks by Priority</h3>
+        <div class="priority-bars" id="priority-bars"></div>
+      </div>
+    </section>
+
+    <!-- Habits View -->
+    <section class="view" id="view-habits">
+      <div class="view-header">
+        <div>
+          <h1>Habit Tracker</h1>
+          <p class="view-subtitle">Build consistency, one day at a time</p>
+        </div>
+        <button class="btn btn-primary" id="btn-add-habit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          New Habit
+        </button>
+      </div>
+      <div class="habits-grid" id="habits-grid"></div>
+
+      <!-- Habit Heatmap -->
+      <div class="heatmap-section" id="heatmap-section" style="display:none;">
+        <div class="heatmap-header">
+          <h3 class="chart-title" id="heatmap-title">Habit History</h3>
+          <button class="btn btn-ghost" id="btn-close-heatmap">✕</button>
+        </div>
+        <div class="heatmap-container" id="heatmap-container"></div>
+        <div class="heatmap-legend">
+          <span>Less</span>
+          <div class="heatmap-scale">
+            <div class="heatmap-cell-legend" style="opacity:0.15"></div>
+            <div class="heatmap-cell-legend" style="opacity:0.5"></div>
+            <div class="heatmap-cell-legend" style="opacity:0.75"></div>
+            <div class="heatmap-cell-legend" style="opacity:1"></div>
+          </div>
+          <span>More</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tasks View -->
+    <section class="view" id="view-tasks">
+      <div class="view-header">
+        <div>
+          <h1>Task Manager</h1>
+          <p class="view-subtitle">Organize, prioritize, conquer</p>
+        </div>
+        <button class="btn btn-primary" id="btn-add-task">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          New Task
+        </button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters-bar" id="filters-bar">
+        <div class="filter-group">
+          <label class="filter-label">Status</label>
+          <select class="filter-select" id="filter-status">
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Priority</label>
+          <select class="filter-select" id="filter-priority">
+            <option value="all">All</option>
+            <option value="critical">Critical</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Sort</label>
+          <select class="filter-select" id="filter-sort">
+            <option value="priority">Priority</option>
+            <option value="due_date">Due Date</option>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Task List -->
+      <div class="task-list" id="task-list"></div>
+    </section>
+  </main>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Add Item</h2>
+        <button class="btn btn-ghost modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/habits.js"></script>
+  <script src="/js/tasks.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
