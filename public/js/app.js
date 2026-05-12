@@ -1,7 +1,13 @@
 // ===== Main App Controller =====
 document.addEventListener('DOMContentLoaded', () => {
   setRandomQuote();
-  navigateTo('dashboard');
+
+  // Check if user is logged in
+  if (Auth.isLoggedIn()) {
+    showAppPage();
+  } else {
+    showAuthPage();
+  }
 
   // Nav click handlers
   document.querySelectorAll('.nav-link').forEach(link => {
@@ -30,18 +36,23 @@ document.addEventListener('DOMContentLoaded', () => {
   ['filter-status', 'filter-priority', 'filter-sort'].forEach(id => {
     document.getElementById(id).addEventListener('change', loadTasks);
   });
+
+  // Logout button
+  document.getElementById('btn-logout').addEventListener('click', (e) => {
+    e.preventDefault();
+    Auth.logout();
+    showToast('Logged out successfully', 'success');
+  });
 });
 
 function navigateTo(view) {
-  // Update nav active state
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  document.querySelector(`[data-view="${view}"]`).classList.add('active');
+  const navEl = document.querySelector(`[data-view="${view}"]`);
+  if (navEl) navEl.classList.add('active');
 
-  // Show/hide views
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(`view-${view}`).classList.add('active');
 
-  // Load data
   if (view === 'dashboard') loadDashboard();
   else if (view === 'habits') loadHabits();
   else if (view === 'tasks') loadTasks();

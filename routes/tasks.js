@@ -5,8 +5,8 @@ const { all, get, run } = require('../db/database');
 // GET /api/tasks
 router.get('/', (req, res) => {
   const { status, priority, sort } = req.query;
-  let query = 'SELECT * FROM tasks WHERE 1=1';
-  const params = [];
+  let query = 'SELECT * FROM tasks WHERE user_id = ?';
+  const params = [req.userId];
 
   if (status && status !== 'all') { query += ' AND status = ?'; params.push(status); }
   if (priority && priority !== 'all') { query += ' AND priority = ?'; params.push(priority); }
@@ -25,17 +25,18 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   const { title, description, priority, due_date } = req.body;
   if (!title) return res.status(400).json({ error: 'Title is required' });
-  const id = run('INSERT INTO tasks (title, description, priority, due_date) VALUES (?, ?, ?, ?)',
-    [title, description || '', priority || 'medium', due_date || null]);
-  res.status(201).json(get('SELECT * FROM tasks WHERE id = ?', [id]));
+  const id = run('INSERT INTO tasks (user_id, title, description, priority, due_date) VALUES (?, ?, ?, ?, ?)',
+    [req.userId, title, description || '', priority || 'medium', due_date || null]);
+  let task = get('SELECT * FROM tasks WHERE id = ?', [id]);
+  if (!task) task = get('SELECT * FROM tasks WHERE user_id = ? ORDER BY id DESC LIMIT 1', [req.userId]);
+  res.status(201).json(task);
 });
 
 // PUT /api/tasks/:id
 router.put('/:id', (req, res) => {
-  const { title, description, priority, status, due_date } = req.body;
-  const existing = get('SELECT * FROM tasks WHERE id = ?', [parseInt(req.params.id)]);
+  const existing = get('SELECT * FROM tasks WHERE id = ? AND user_id = ?', [parseInt(req.params.id), req.userId]);
   if (!existing) return res.status(404).json({ error: 'Task not found' });
-
+  const { title, description, priority, status, due_date } = req.body;
   const newStatus = status || existing.status;
   const completedAt = newStatus === 'completed' && existing.status !== 'completed'
     ? new Date().toISOString() : (newStatus !== 'completed' ? null : existing.completed_at);
@@ -54,6 +55,8 @@ router.put('/:id', (req, res) => {
 
 // DELETE /api/tasks/:id
 router.delete('/:id', (req, res) => {
+  const existing = get('SELECT id FROM tasks WHERE id = ? AND user_id = ?', [parseInt(req.params.id), req.userId]);
+  if (!existing) return res.status(404).json({ error: 'Not found' });
   run('DELETE FROM tasks WHERE id = ?', [parseInt(req.params.id)]);
   res.json({ success: true });
 });

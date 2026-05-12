@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const { initDB } = require('./db/database');
+const { requireAuth } = require('./middleware/auth');
+const authRouter = require('./routes/auth');
 const habitsRouter = require('./routes/habits');
 const tasksRouter = require('./routes/tasks');
 const dashboardRouter = require('./routes/dashboard');
@@ -13,17 +15,22 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Prevent caching on API routes so dashboard always gets fresh data
+// Prevent caching on API routes
 app.use('/api', (req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.set('Pragma', 'no-cache');
   next();
 });
 
-app.use('/api/habits', habitsRouter);
-app.use('/api/tasks', tasksRouter);
-app.use('/api/dashboard', dashboardRouter);
+// Auth routes (public)
+app.use('/api/auth', authRouter);
 
+// Protected routes
+app.use('/api/habits', requireAuth, habitsRouter);
+app.use('/api/tasks', requireAuth, tasksRouter);
+app.use('/api/dashboard', requireAuth, dashboardRouter);
+
+// SPA fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
